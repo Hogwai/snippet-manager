@@ -1,36 +1,86 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Snippet Manager
 
-## Getting Started
+A minimalist code snippet manager, designed to quickly save and organize your code snippets, commands, or technical notes.
 
-First, run the development server:
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat\&logo=typescript\&logoColor=white)
+![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat\&logo=next.js\&logoColor=white)
+![React](https://img.shields.io/badge/React-61DAFB?style=flat\&logo=react\&logoColor=black)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat\&logo=tailwind-css\&logoColor=white)
+
+## Features
+
+* **Quick snippet creation** with title, content, and category
+* **Real-time search** across all snippets
+* **Category system** with autocomplete
+* **Responsive and minimalist interface**
+* **Multilingual support** (French/English)
+* **Automatic expand/collapse** for long snippets
+* **One-click copy** to clipboard
+* **Keyboard shortcut**: `Ctrl + Enter` for quick add
+
+## Tech Stack
+
+* **Framework**: [Next.js 15](https://nextjs.org/) (App Router)
+* **Language**: [TypeScript](https://www.typescriptlang.org/)
+* **UI Library**: [React 19](https://react.dev/)
+* **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+* **Icons**: [Lucide React](https://lucide.dev/)
+* **Storage**: Browser LocalStorage
+
+## Installation
+
+### Prerequisites
+
+* [Node.js](https://nodejs.org/) 20 and higher
+* npm or yarn
+
+### Steps
+
+#### Clone the repository
+
+```bash
+git clone https://github.com/Hogwai/snippet-manager
+```
+
+#### Start the development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+#### Open in your browser
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Go to [http://localhost:3000](http://localhost:3000)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Important: Local Storage
 
-## Learn More
+> **This project uses the browser’s LocalStorage to save your snippets.**
 
-To learn more about Next.js, take a look at the following resources:
+### What this means
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+* **No server required** – Everything runs locally
+* **Private data** – Your snippets stay on your machine
+* **Fast and instant** – No network latency
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Limitations
 
-## Deploy on Vercel
+* **No sync** – Snippets are only available on the current browser/device
+* **Risk of data loss** – Clearing browser data or reinstalling the OS will erase them
+* **Storage limit** – LocalStorage is limited to about 5–10 MB per domain
+* **No automatic backup** – Export your snippets regularly
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Supported Languages
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+* French
+* English
+
+Language can be switched via the toggle at the top right. Your preference is saved automatically.
+
+## Available Scripts
+
+```bash
+npm run dev      # Start in development mode
+npm run build    # Build for production
+npm start        # Start production server
+npm run lint     # Run ESLint checks
+```
