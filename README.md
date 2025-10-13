@@ -61,6 +61,7 @@ Go to [http://localhost:3000](http://localhost:3000)
 * **No server required** – Everything runs locally
 * **Private data** – Your snippets stay on your machine
 * **Fast and instant** – No network latency
+* **Not a credential manager** - Your snippets are stored as a plain json on your browser
 
 ### Limitations
 
