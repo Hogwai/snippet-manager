@@ -4,7 +4,11 @@ import { Language, Translations } from './translations';
 export function formatDate(dateString: string, language: Language, t: Translations): string {
   const date = new Date(dateString);
   const now = new Date();
-  const diffTime = Math.abs(now.getTime() - date.getTime());
+  
+  const dateOnly = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  const nowOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  
+  const diffTime = nowOnly.getTime() - dateOnly.getTime();
   const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
   if (diffDays === 0) {
@@ -58,7 +62,7 @@ export function importSnippets(file: File): Promise<Snippet[]> {
           reject(new Error('Format de fichier invalide'));
         }
       } catch (error) {
-        reject(new Error(`Fichier JSON invalide: ${error}`));
+        reject(new Error('Fichier JSON invalide'));
       }
     };
     reader.onerror = () => reject(new Error('Erreur de lecture du fichier'));
