@@ -17,6 +17,9 @@ export interface Translations {
   snippet: {
     copy: string;
     delete: string;
+    edit: string;
+    save: string;
+    cancel: string;
     showMore: string;
     showLess: string;
     today: string;
@@ -32,6 +35,9 @@ export interface Translations {
     year: string;
     years: string;
     uncategorized: string;
+    created: string;
+    edited: string;
+    editShortcut: string;
   };
   empty: {
     title: string;
@@ -57,6 +63,9 @@ export const translations: Record<Language, Translations> = {
     snippet: {
       copy: 'Copier',
       delete: 'Supprimer',
+      edit: 'Modifier',
+      save: 'Enregistrer',
+      cancel: 'Annuler',
       showMore: '▼ Voir plus',
       showLess: '▲ Voir moins',
       today: "Aujourd'hui",
@@ -72,6 +81,9 @@ export const translations: Record<Language, Translations> = {
       year: 'an',
       years: 'ans',
       uncategorized: 'Sans catégorie',
+      created: 'Créé',
+      edited: 'modifié',
+      editShortcut: 'Ctrl + Entrée pour enregistrer, Échap pour annuler',
     },
     empty: {
       title: 'Aucun snippet trouvé',
@@ -95,6 +107,9 @@ export const translations: Record<Language, Translations> = {
     snippet: {
       copy: 'Copy',
       delete: 'Delete',
+      edit: 'Edit',
+      save: 'Save',
+      cancel: 'Cancel',
       showMore: '▼ Show more',
       showLess: '▲ Show less',
       today: 'Today',
@@ -110,6 +125,9 @@ export const translations: Record<Language, Translations> = {
       year: 'year',
       years: 'years',
       uncategorized: 'Uncategorized',
+      created: 'Created',
+      edited: 'edited',
+      editShortcut: 'Ctrl + Enter to save, Esc to cancel',
     },
     empty: {
       title: 'No snippets found',

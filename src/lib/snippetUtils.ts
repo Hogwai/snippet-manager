@@ -59,13 +59,13 @@ export function importSnippets(file: File): Promise<Snippet[]> {
           const snippets = JSON.parse(result) as Snippet[];
           resolve(snippets);
         } else {
-          reject(new Error('Format de fichier invalide'));
+          reject(new Error('Invalid file format'));
         }
       } catch (error) {
-        reject(new Error('Fichier JSON invalide'));
+        reject(new Error(`Invalid JSON file: ${error}`));
       }
     };
-    reader.onerror = () => reject(new Error('Erreur de lecture du fichier'));
+    reader.onerror = () => reject(new Error('Error while reading the file'));
     reader.readAsText(file);
   });
 }

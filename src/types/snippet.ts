@@ -4,6 +4,7 @@ export interface Snippet {
   content: string;
   category: string;
   createdAt: string;
+  updatedAt: string;
 }
 
 export interface SnippetFormData {

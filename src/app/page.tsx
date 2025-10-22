@@ -5,24 +5,34 @@ import SnippetForm from '@/components/SnippetForm';
 import SnippetList from '@/components/SnippetList';
 import SearchBar from '@/components/SearchBar';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
-import { useLocalStorage } from '@/hooks/useLocalStorage';
+import { useFileStorage } from '@/hooks/useFileStorage';
 import { useLanguage } from '@/context/LanguageContext';
 import { Snippet, SnippetFormData, CategoryFilter } from '@/types/snippet';
 
 export default function Home() {
   const { t } = useLanguage();
-  const [snippets, setSnippets] = useLocalStorage<Snippet[]>('snippets', []);
+  const [snippets, setSnippets] = useFileStorage<Snippet[]>('snippets', []);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<CategoryFilter>('all');
 
   const addSnippet = (snippet: SnippetFormData) => {
+    const now = new Date().toISOString();
     const newSnippet: Snippet = {
       id: Date.now(),
       ...snippet,
       category: snippet.category || t.snippet.uncategorized,
-      createdAt: new Date().toISOString()
+      createdAt: now,
+      updatedAt: now
     };
     setSnippets([newSnippet, ...snippets]);
+  };
+
+  const updateSnippet = (id: number, updatedData: SnippetFormData) => {
+    setSnippets(snippets.map(s => 
+      s.id === id 
+        ? { ...s, ...updatedData, updatedAt: new Date().toISOString() }
+        : s
+    ));
   };
 
   const deleteSnippet = (id: number) => {
@@ -63,6 +73,7 @@ export default function Home() {
         <SnippetList
           snippets={filteredSnippets}
           onDeleteSnippet={deleteSnippet}
+          onUpdateSnippet={updateSnippet}
         />
       </div>
     </main>

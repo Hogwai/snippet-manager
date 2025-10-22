@@ -1,15 +1,16 @@
 'use client';
 
 import SnippetItem from './SnippetItem';
-import { Snippet } from '@/types/snippet';
+import { Snippet, SnippetFormData } from '@/types/snippet';
 import { useLanguage } from '@/context/LanguageContext';
 
 interface SnippetListProps {
   snippets: Snippet[];
   onDeleteSnippet: (id: number) => void;
+  onUpdateSnippet: (id: number, data: SnippetFormData) => void;
 }
 
-export default function SnippetList({ snippets, onDeleteSnippet }: SnippetListProps) {
+export default function SnippetList({ snippets, onDeleteSnippet, onUpdateSnippet }: SnippetListProps) {
   const { t } = useLanguage();
   
   if (snippets.length === 0) {
@@ -28,6 +29,7 @@ export default function SnippetList({ snippets, onDeleteSnippet }: SnippetListPr
           key={snippet.id}
           snippet={snippet}
           onDelete={onDeleteSnippet}
+          onUpdate={onUpdateSnippet}
         />
       ))}
     </div>
