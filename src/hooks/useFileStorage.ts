@@ -31,7 +31,7 @@ export function useFileStorage<T>(key: string, initialValue: T): [T, Dispatch<Se
                 try {
                     await tauriFS.mkdir(dirPath);
                 } catch {
-                    console.debug(`${dirPath} already exists`)
+                    console.debug(`${dirPath} already exists`);
                 }
 
                 await tauriFS.writeTextFile(filePath, JSON.stringify(value, null, 2));
@@ -51,7 +51,8 @@ export function useFileStorage<T>(key: string, initialValue: T): [T, Dispatch<Se
 
                 try {
                     const contents = await tauriFS.readTextFile(filePath);
-                    setStoredValue(JSON.parse(contents));
+                    const parsed = JSON.parse(contents);
+                    setStoredValue((prev) => (JSON.stringify(prev) === JSON.stringify(parsed) ? prev : parsed));
                 } catch {
                     console.log(`File ${key}.json not found, using initial value`);
                     await saveToFile(initialValue);
@@ -59,7 +60,8 @@ export function useFileStorage<T>(key: string, initialValue: T): [T, Dispatch<Se
             } else {
                 const item = window.localStorage.getItem(key);
                 if (item) {
-                    setStoredValue(JSON.parse(item));
+                    const parsed = JSON.parse(item);
+                    setStoredValue((prev) => (JSON.stringify(prev) === JSON.stringify(parsed) ? prev : parsed));
                 }
             }
         } catch (error) {
@@ -84,10 +86,8 @@ export function useFileStorage<T>(key: string, initialValue: T): [T, Dispatch<Se
 
             if (isClient) {
                 if (isTauri) {
-                    // Windows
                     await saveToFile(valueToStore);
                 } else {
-                    // Web
                     window.localStorage.setItem(key, JSON.stringify(valueToStore));
                 }
             }
