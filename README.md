@@ -1,11 +1,14 @@
 # Snippet Manager
 
-A minimalist code snippet manager, designed to quickly save and organize your code snippets, commands, or technical notes.
-
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat\&logo=typescript\&logoColor=white)
 ![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat\&logo=next.js\&logoColor=white)
 ![React](https://img.shields.io/badge/React-61DAFB?style=flat\&logo=react\&logoColor=black)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat\&logo=tailwind-css\&logoColor=white)
+![Tauri](https://img.shields.io/badge/Tauri-24C8D8?logo=tauri&logoColor=fff)
+
+A minimalist code snippet manager, designed to quickly save and organize your code snippets, commands, or technical notes.
+
+Available as a [web app](https://hogwai.github.io/snippet-manager/) and as a [windows desktop application](https://github.com/Hogwai/snippet-manager/releases/)
 
 ## Features
 
@@ -25,7 +28,8 @@ A minimalist code snippet manager, designed to quickly save and organize your co
 * **UI Library**: [React 19](https://react.dev/)
 * **Styling**: [Tailwind CSS](https://tailwindcss.com/)
 * **Icons**: [Lucide React](https://lucide.dev/)
-* **Storage**: Browser LocalStorage
+* **Storage**: Web app: browser local / Windows app: %APPDATA%\com.hogwai\snippet-manager\snippets.json
+* 
 
 ## Installation
 
@@ -52,7 +56,7 @@ npm run dev
 
 Go to [http://localhost:3000](http://localhost:3000)
 
-## Important: Local Storage
+## Web app: Important 
 
 > **This project uses the browser’s LocalStorage to save your snippets.**
 
@@ -84,4 +88,6 @@ npm run dev      # Start in development mode
 npm run build    # Build for production
 npm start        # Start production server
 npm run lint     # Run ESLint checks
+npm run tauri:dev # Start tauri in dev mode
+npm run tauri:build # Build the binaries
 ```
