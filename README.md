@@ -29,7 +29,7 @@ Available as a [web app](https://hogwai.github.io/snippet-manager/) and as a [wi
 * **Styling**: [Tailwind CSS](https://tailwindcss.com/)
 * **Icons**: [Lucide React](https://lucide.dev/)
 * **Storage**: Web app: browser local / Windows app: %APPDATA%\com.hogwai\snippet-manager\snippets.json
-* 
+* **Windows app**: Tauri  
 
 ## Installation
 
