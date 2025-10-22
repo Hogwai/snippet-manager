@@ -1,99 +1,100 @@
 'use client';
 
-import { useState, useEffect, Dispatch, SetStateAction } from 'react';
+import { useState, useEffect, Dispatch, SetStateAction, useCallback } from 'react';
 
-// Détecte si on est dans Tauri ou dans le navigateur
+// Desktop or Web
 const isTauri = typeof window !== 'undefined' && '__TAURI__' in window;
 
-let tauriFS: any = null;
-let tauriPath: any = null;
+let tauriFS: typeof import('@tauri-apps/plugin-fs') | null = null;
+let tauriPath: typeof import('@tauri-apps/api/path') | null = null;
 
 if (isTauri) {
-  import('@tauri-apps/plugin-fs').then(module => {
-    tauriFS = module;
-  });
-  import('@tauri-apps/api/path').then(module => {
-    tauriPath = module;
-  });
+    import('@tauri-apps/plugin-fs').then(module => {
+        tauriFS = module;
+    });
+    import('@tauri-apps/api/path').then(module => {
+        tauriPath = module;
+    });
 }
 
 export function useFileStorage<T>(key: string, initialValue: T): [T, Dispatch<SetStateAction<T>>] {
-  const [storedValue, setStoredValue] = useState<T>(initialValue);
-  const [isClient, setIsClient] = useState<boolean>(false);
-  const [isReady, setIsReady] = useState<boolean>(false);
+    const [storedValue, setStoredValue] = useState<T>(initialValue);
+    const [isClient, setIsClient] = useState<boolean>(false);
 
-  useEffect(() => {
-    setIsClient(true);
-    loadData();
-  }, [key]);
+    const saveToFile = useCallback(async (value: T) => {
+        if (isTauri && tauriFS && tauriPath) {
+            try {
+                const appDataDir = await tauriPath.appDataDir();
+                const dirPath = `${appDataDir}snippet-manager`;
+                const filePath = `${dirPath}/${key}.json`;
 
-  const loadData = async () => {
-    if (!isClient) return;
+                try {
+                    await tauriFS.mkdir(dirPath);
+                } catch {
+                    console.debug(`${dirPath} already exists`)
+                }
 
-    try {
-      if (isTauri && tauriFS && tauriPath) {
-        const appDataDir = await tauriPath.appDataDir();
-        const filePath = `${appDataDir}snippet-manager/${key}.json`;
-        
+                await tauriFS.writeTextFile(filePath, JSON.stringify(value, null, 2));
+            } catch (error) {
+                console.error(`Error saving ${key} to file:`, error);
+            }
+        }
+    }, [key]);
+
+    const loadData = useCallback(async () => {
+        if (!isClient) return;
+
         try {
-          const contents = await tauriFS.readTextFile(filePath);
-          setStoredValue(JSON.parse(contents));
+            if (isTauri && tauriFS && tauriPath) {
+                const appDataDir = await tauriPath.appDataDir();
+                const filePath = `${appDataDir}snippet-manager/${key}.json`;
+
+                try {
+                    const contents = await tauriFS.readTextFile(filePath);
+                    setStoredValue(JSON.parse(contents));
+                } catch {
+                    console.log(`File ${key}.json not found, using initial value`);
+                    await saveToFile(initialValue);
+                }
+            } else {
+                const item = window.localStorage.getItem(key);
+                if (item) {
+                    setStoredValue(JSON.parse(item));
+                }
+            }
         } catch (error) {
-          console.log(`File ${key}.json not found, using initial value`);
-          await saveToFile(initialValue);
+            console.error(`Error loading ${key}:`, error);
         }
-      } else {
-        // Mode navigateur - Utiliser localStorage
-        const item = window.localStorage.getItem(key);
-        if (item) {
-          setStoredValue(JSON.parse(item));
+    }, [isClient, key, initialValue, saveToFile]);
+
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
+
+    useEffect(() => {
+        if (isClient) {
+            loadData();
         }
-      }
-      setIsReady(true);
-    } catch (error) {
-      console.error(`Error loading ${key}:`, error);
-      setIsReady(true);
-    }
-  };
+    }, [isClient, loadData]);
 
-  const saveToFile = async (value: T) => {
-    if (isTauri && tauriFS && tauriPath) {
-      try {
-        const appDataDir = await tauriPath.appDataDir();
-        const dirPath = `${appDataDir}snippet-manager`;
-        const filePath = `${dirPath}/${key}.json`;
-
+    const setValue: Dispatch<SetStateAction<T>> = async (value) => {
         try {
-          await tauriFS.createDir(dirPath, { recursive: true });
-        } catch (e) {
-          console.debug(`${dirPath} already exists`)
+            const valueToStore = value instanceof Function ? value(storedValue) : value;
+            setStoredValue(valueToStore);
+
+            if (isClient) {
+                if (isTauri) {
+                    // Windows
+                    await saveToFile(valueToStore);
+                } else {
+                    // Web
+                    window.localStorage.setItem(key, JSON.stringify(valueToStore));
+                }
+            }
+        } catch (error) {
+            console.error(`Error saving ${key}:`, error);
         }
+    };
 
-        await tauriFS.writeTextFile(filePath, JSON.stringify(value, null, 2));
-      } catch (error) {
-        console.error(`Error saving ${key} to file:`, error);
-      }
-    }
-  };
-
-  const setValue: Dispatch<SetStateAction<T>> = async (value) => {
-    try {
-      const valueToStore = value instanceof Function ? value(storedValue) : value;
-      setStoredValue(valueToStore);
-
-      if (isClient) {
-        if (isTauri) {
-          // Sauvegarder dans le système de fichiers
-          await saveToFile(valueToStore);
-        } else {
-          // Sauvegarder dans localStorage
-          window.localStorage.setItem(key, JSON.stringify(valueToStore));
-        }
-      }
-    } catch (error) {
-      console.error(`Error saving ${key}:`, error);
-    }
-  };
-
-  return [storedValue, setValue];
+    return [storedValue, setValue];
 }
