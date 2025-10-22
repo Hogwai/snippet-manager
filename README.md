@@ -47,6 +47,9 @@ git clone https://github.com/Hogwai/snippet-manager
 ```
 
 #### Start the development server
+```bash
+npm install
+```
 
 ```bash
 npm run dev
