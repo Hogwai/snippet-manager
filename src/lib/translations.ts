@@ -3,6 +3,13 @@ export type Language = 'fr' | 'en';
 export interface Translations {
   title: string;
   subtitle: string;
+  export: string;
+  exportJson: string;
+  exportText: string;
+  import: string;
+  exportSuccess: string;
+  importSuccess: string;
+  importError: string;
   form: {
     titlePlaceholder: string;
     contentPlaceholder: string;
@@ -49,6 +56,13 @@ export const translations: Record<Language, Translations> = {
   fr: {
     title: 'Snippet Manager',
     subtitle: 'Gérez vos snippets de code facilement',
+    export: 'Exporter',
+    exportJson: 'Exporter en JSON',
+    exportText: 'Exporter en texte',
+    import: 'Importer',
+    exportSuccess: 'Snippets exportés avec succès',
+    importSuccess: '{count} snippet(s) importé(s) avec succès',
+    importError: 'Erreur lors de l\'importation du fichier',
     form: {
       titlePlaceholder: 'Titre du snippet',
       contentPlaceholder: 'Collez votre code ou texte ici...',
@@ -93,6 +107,13 @@ export const translations: Record<Language, Translations> = {
   en: {
     title: 'Snippet Manager',
     subtitle: 'Manage your code snippets easily',
+    export: 'Export',
+    exportJson: 'Export JSON',
+    exportText: 'Export Text',
+    import: 'Import',
+    exportSuccess: 'Snippets exported successfully',
+    importSuccess: '{count} snippet(s) imported successfully',
+    importError: 'Error importing file',
     form: {
       titlePlaceholder: 'Snippet title',
       contentPlaceholder: 'Paste your code or text here...',
