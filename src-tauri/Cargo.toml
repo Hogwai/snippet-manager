@@ -1,10 +1,10 @@
 [package]
-name = "app"
-version = "0.1.0"
-description = "A Tauri App"
-authors = ["you"]
-license = ""
-repository = ""
+name = "snippet-manager"
+version = "0.1.1"
+description = "Snippet manager"
+authors = ["Hogwai"]
+license = "MIT"
+repository = "https://github.com/Hogwai/snippet-manager.git"
 edition = "2021"
 rust-version = "1.77.2"
 
