@@ -5,6 +5,7 @@ import SnippetForm from '@/components/SnippetForm';
 import SnippetList from '@/components/SnippetList';
 import SearchBar from '@/components/SearchBar';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import ExportImportButtons from '@/components/ExportImportButtons';
 import { useFileStorage } from '@/hooks/useFileStorage';
 import { useLanguage } from '@/context/LanguageContext';
 import { Snippet, SnippetFormData, CategoryFilter } from '@/types/snippet';
@@ -35,6 +36,16 @@ export default function Home() {
     ));
   };
 
+  const handleImport = (importedSnippets: Snippet[]) => {
+    const maxId = snippets.length > 0 ? Math.max(...snippets.map(s => s.id)) : 0;
+    const newSnippets = importedSnippets.map((snippet, index) => ({
+      ...snippet,
+      id: maxId + index + 1,
+    }));
+    setSnippets([...snippets, ...newSnippets]);
+    alert(t.importSuccess.replace('{count}', newSnippets.length.toString()));
+  };
+
   const deleteSnippet = (id: number) => {
     setSnippets(snippets.filter(s => s.id !== id));
   };
@@ -57,7 +68,10 @@ export default function Home() {
             <h1 className="text-3xl font-light text-gray-800">{t.title}</h1>
             <p className="text-gray-500 mt-2">{t.subtitle}</p>
           </div>
-          <LanguageSwitcher />
+          <div className="flex gap-3">
+            <ExportImportButtons snippets={snippets} onImport={handleImport} />
+            <LanguageSwitcher />
+          </div>
         </header>
 
         <SnippetForm onAddSnippet={addSnippet} existingCategories={existingCategories} />
